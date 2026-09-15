@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Facebook Pixel Test</title>
+
+  <!-- ВСТАВЬТЕ СЮДА СВОЙ FACEBOOK PIXEL ID -->
+  <script>
+    const PIXEL_ID = "YOUR_PIXEL_ID";
+
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)
+    }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+    if (PIXEL_ID !== "YOUR_PIXEL_ID") {
+      fbq('init', PIXEL_ID);
+      fbq('track', 'PageView');
+    }
+  </script>
+  <noscript>
+    <!-- PageView будет работать только при включенном JavaScript -->
+  </noscript>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 60px auto;
+      padding: 24px;
+    }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.08);
+    }
+    h1 { margin-top: 0; }
+    .buttons { display: grid; gap: 12px; margin-top: 24px; }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #1877f2;
+      color: white;
+    }
+    button.secondary { background: #344054; }
+    button.success { background: #12b76a; }
+    .status {
+      margin-top: 24px;
+      padding: 14px;
+      background: #f2f4f7;
+      border-radius: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Facebook Pixel Test</h1>
+      <p>Тестовая страница для проверки событий Meta/Facebook Pixel.</p>
+
+      <div class="buttons">
+        <button onclick="sendEvent('Lead')">Отправить Lead</button>
+        <button class="secondary" onclick="sendEvent('CompleteRegistration')">
+          Отправить CompleteRegistration
+        </button>
+        <button class="success" onclick="sendPurchase()">
+          Отправить Purchase
+        </button>
+      </div>
+
+      <div id="status" class="status">Готово. Нажми кнопку для отправки события.</div>
+    </div>
+  </div>
+
+  <script>
+    function log(message) {
+      document.getElementById('status').textContent =
+        new Date().toLocaleTimeString() + ' — ' + message;
+    }
+
+    function sendEvent(eventName) {
+      if (typeof fbq !== 'function' || PIXEL_ID === 'YOUR_PIXEL_ID') {
+        log('Pixel ID не указан. Вставь свой ID в переменную PIXEL_ID.');
+        return;
+      }
+
+      fbq('track', eventName);
+      log('Отправлено событие: ' + eventName);
+    }
+
+    function sendPurchase() {
+      if (typeof fbq !== 'function' || PIXEL_ID === 'YOUR_PIXEL_ID') {
+        log('Pixel ID не указан. Вставь свой ID в переменную PIXEL_ID.');
+        return;
+      }
+
+      fbq('track', 'Purchase', {
+        value: 19.99,
+        currency: 'USD'
+      });
+
+      log('Отправлено событие: Purchase (19.99 USD)');
+    }
+  </script>
+</body>
+</html>
